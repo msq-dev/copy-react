@@ -1,38 +1,82 @@
-.App {
+:root {
+  --clue-card-size: 10rem;
+  --clue-cards-gap: 1rem;
+  --vr: 1.5rem; /* vertical rhythm */
+  --color-dark: #002b5f;
+  --color-light: #fff;
+  --global-border-radius: 6px;
+
+  touch-action: manipulation;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: sans-serif;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+.subtitle {
+  font-size: 80%;
   text-align: center;
+  line-height: 1.5;
+  margin-top: 0.25rem;
+  margin-bottom: var(--vr);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.quiz-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.clue-card-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: var(--clue-cards-gap);
+  margin-bottom: var(--vr);
+  max-width: calc(2 * var(--clue-card-size) + var(--clue-cards-gap));
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.clue-card,
+.clue-card-back {
+  width: var(--clue-card-size);
+  height: var(--clue-card-size);
+  color: var(--color-light);
+  background: var(--color-dark);
+  border-radius: var(--global-border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clue-card-back {
+  background: linear-gradient(
+    173deg,
+    rgba(181, 220, 246, 1) 0%,
+    rgba(181, 220, 246, 1) 25%,
+    rgba(186, 222, 247, 1) 30%,
+    rgba(173, 212, 245, 1) 31%,
+    rgba(173, 212, 245, 1) 100%
+  );
+  color: var(--color-dark);
+}
+
+.answer {
+  margin-bottom: var(--vr);
+  background: var(--color-dark);
+  color: var(--color-light);
+  padding: 0.75rem;
+  text-align: center;
+  border-radius: var(--global-border-radius);
+  cursor: pointer;
+  width: calc(2 * var(--clue-card-size) + var(--clue-cards-gap));
+}
+
+.next-question-button {
+  padding: 0.75rem;
+  border: 2px solid #000;
+  border-radius: var(--global-border-radius);
 }
