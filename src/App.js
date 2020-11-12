@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Quiz from './components/Quiz';
 import Button from './components/Button';
 import questions from './assets/questions.json'
 
+import axios from "axios";
 
 function App() {
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answerShown, toggleAnswer] = useState(false);
-  const question = questions[questionIndex]
+  const [appState, setAppState] = useState({
+    loading: false,
+    questions: null,
+  });
+
+  useEffect(() => {
+    setAppState({ loading: true });
+    const apiUrl = "http://localhost:8080/round01";
+    axios.get(apiUrl).then((questions) => {
+      const allQuestions = questions.data;
+      setAppState({ questions: allQuestions, loading: false });
+    });
+  }, [setAppState]);
+
   return (
     <div className="quiz-container">
       <h1 className="title">CopyConReact</h1>
       <span>Another shameless rip-off (now with React)</span>
       <h3>Frage {questionIndex + 1}</h3>
 
-      <Quiz question={question} />
+      <Quiz isLoading={appState.loading} questions={appState.questions} idx={questionIndex}/>
+
       <Button className="answer" onClick={() => toggleAnswer(!answerShown)}>
         {answerShown ? questions[questionIndex].answer : "Lösung anzeigen"}
       </Button>   
