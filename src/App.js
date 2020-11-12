@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Quiz from './components/Quiz';
-import Button from './components/Button';
-import questions from './assets/questions.json'
+
 
 import axios from "axios";
 
 function App() {
   const [questionIndex, setQuestionIndex] = useState(0);
-  const [answerShown, toggleAnswer] = useState(false);
-  const [appState, setAppState] = useState({
-    loading: false,
-    questions: null,
-  });
+  const [showAnswer, toggleShowAnswer] = useState(false);
+  const [isLoading, setIsLoading] = useState(true)
+  const [questions, setQuestions] = useState(null)
 
   useEffect(() => {
-    setAppState({ loading: true });
+    setIsLoading(true)
     const apiUrl = "http://localhost:8080/round01";
     axios.get(apiUrl).then((questions) => {
       const allQuestions = questions.data;
-      setAppState({ questions: allQuestions, loading: false });
+      setQuestions(allQuestions)
+      setIsLoading(false)
+    }).catch(e => {
+      setIsLoading(false)
     });
-  }, [setAppState]);
+  }, []);
 
   return (
     <div className="quiz-container">
@@ -29,19 +29,15 @@ function App() {
       <span>Another shameless rip-off (now with React)</span>
       <h3>Frage {questionIndex + 1}</h3>
 
-      <Quiz isLoading={appState.loading} questions={appState.questions} idx={questionIndex}/>
-
-      <Button className="answer" onClick={() => toggleAnswer(!answerShown)}>
-        {answerShown ? questions[questionIndex].answer : "Lösung anzeigen"}
-      </Button>   
+      <Quiz isLoading={isLoading} questions={questions} idx={questionIndex} onClickShowResult={() => toggleShowAnswer(!showAnswer)} showAnswer={showAnswer}/>   
         
       <div className="next-question-button" onClick={() => {
         if(questionIndex + 1 > questions.length -1) {
           setQuestionIndex(0);
-          toggleAnswer(false);
+          toggleShowAnswer(false);
         } else {
           setQuestionIndex(questionIndex +1)
-          toggleAnswer(false);
+          toggleShowAnswer(false);
         }
       }
       }>nächste Frage</div>

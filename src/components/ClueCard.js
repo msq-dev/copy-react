@@ -1,25 +1,20 @@
 import React, { useState } from 'react'
 
-export default function ClueCard({index, canClick, clueNumber, clue}) {
-  const [clueShown, toggleClue] = useState(clueNumber === 1)
-
-  if (!clueShown && index >= 3) {
-    canClick = false;
-  }
+export default function ClueCard({index, isClickable, clueNumber, clue, onClick}) {
+  const [isShown, toggleIsShown] = useState(clueNumber === 1)
 
   return (
     <div
       index={index} 
-      className={clueShown ? "clue-card" : "clue-card-back"} 
+      className={isShown ? "clue-card" : "clue-card-back"} 
       onClick={() => {
-        if (canClick) {
-          toggleClue(!clueShown)
-        } else {
-          //pass
-        }
+        if (isClickable) {
+          onClick()
+          toggleIsShown(!isShown)
+        } 
       }}
     >
-        {clueShown ? clue : `Clue ${clueNumber}`}
+        {isShown ? clue : `Clue ${clueNumber}`}
     </div>
   )
 }
